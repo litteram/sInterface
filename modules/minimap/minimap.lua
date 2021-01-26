@@ -3,6 +3,8 @@ local E = ns.E
 
 if not E:C('minimap', 'enabled') then return end
 
+local mediapath = "Interface\\AddOns\\sInterface\\media\\"
+
 -- Position
 Minimap:ClearAllPoints()
 Minimap:SetPoint(unpack(E:C('minimap', 'position')))
@@ -44,17 +46,41 @@ if (E:C('minimap', 'zoneText')) then
 end
 
 -- Clock
-if not IsAddOnLoaded("Blizzard_TimeManager") then
-	LoadAddOn("Blizzard_TimeManager")
-	TimeManagerClockButton:Hide()
-end
+-- Blizzard_TimeManager
+LoadAddOn("Blizzard_TimeManager")
+TimeManagerClockButton:GetRegions():Hide()
+TimeManagerClockButton:ClearAllPoints()
+TimeManagerClockButton:SetPoint("BOTTOM",0,5)
+TimeManagerClockTicker:SetFont(STANDARD_TEXT_FONT,12,"OUTLINE")
+TimeManagerClockTicker:SetTextColor(0.8,0.8,0.6,1)
 
--- Calendar
-GameTimeFrame:Hide()
+-- GameTimeFrame
+GameTimeFrame:SetParent(Minimap)
+GameTimeFrame:SetScale(0.6)
+GameTimeFrame:ClearAllPoints()
+GameTimeFrame:SetPoint("TOP",Minimap,0,0)
+GameTimeFrame:SetHitRectInsets(0, 0, 0, 0)
+GameTimeFrame:GetNormalTexture():SetTexCoord(0,1,0,1)
+GameTimeFrame:SetNormalTexture(mediapath.."calendar.blp")
+GameTimeFrame:SetPushedTexture(nil)
+GameTimeFrame:SetHighlightTexture (nil)
+local fs = GameTimeFrame:GetFontString()
+fs:ClearAllPoints()
+fs:SetPoint("CENTER",0,-5)
+fs:SetFont(STANDARD_TEXT_FONT,20)
+fs:SetTextColor(0.2,0.2,0.1,0.9)
 
 -- Garrison
-GarrisonLandingPageMinimapButton:Hide()
-GarrisonLandingPageMinimapButton:UnregisterAllEvents();
+do
+    -- GarrisonLandingPageMinimapButton:Hide()
+    -- GarrisonLandingPageMinimapButton:UnregisterAllEvents();
+    hooksecurefunc("GarrisonLandingPageMinimapButton_UpdateIcon", function(self)
+        self:SetScale(.55)
+        self:ClearAllPoints()
+        self:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 0, 0)
+    end)
+end
+
 
 -- Tracking
 MiniMapTrackingBackground:SetAlpha(0)
@@ -84,4 +110,44 @@ MiniMapInstanceDifficulty:Hide()
 -- World Map
 MiniMapWorldMapButton:Hide()
 
+-- Durability Frame
+DurabilityFrame:ClearAllPoints()
+DurabilityFrame:SetParent(MinimapCluster)
+DurabilityFrame:SetPoint("TOP",MinimapCluster,"BOTTOM",0,0)
+
+
 E:ShadowedBorder(Minimap)
+
+
+-- onEnter
+local function Show()
+    GameTimeFrame:SetAlpha(0.9)
+    TimeManagerClockButton:SetAlpha(0.9)
+    MiniMapTracking:SetAlpha(0.9)
+    MiniMapChallengeMode:SetAlpha(0.9)
+    MiniMapInstanceDifficulty:SetAlpha(0.9)
+    GuildInstanceDifficulty:SetAlpha(0.9)
+    GarrisonLandingPageMinimapButton:SetAlpha(0.9)
+end
+Minimap:SetScript("OnEnter", Show)
+
+-- onleave/hide
+local lasttime = 0
+local function Hide()
+    if Minimap:IsMouseOver() then return end
+    if time() == lasttime then return end
+    GameTimeFrame:SetAlpha(0)
+    TimeManagerClockButton:SetAlpha(0)
+    MiniMapTracking:SetAlpha(0)
+    MiniMapChallengeMode:SetAlpha(0)
+    MiniMapInstanceDifficulty:SetAlpha(0)
+    GuildInstanceDifficulty:SetAlpha(0)
+    GarrisonLandingPageMinimapButton:SetAlpha(0)
+end
+local function SetTimer()
+    lasttime = time()
+    C_Timer.After(1.5, Hide)
+end
+Minimap:SetScript("OnLeave", SetTimer)
+rLib:RegisterCallback("PLAYER_ENTERING_WORLD", Hide)
+Hide(Minimap)
