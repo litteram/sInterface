@@ -1,0 +1,8 @@
+## Interface: 90001
+## Version: 900-2020101701
+## Author: gmarco
+## Title: rButtonTemplate_Gm_sr
+## Notes: A "Thin Square Rounded Border" buttons theme for rButtonTemplate
+## RequiredDeps: rButtonTemplate
+
+theme.lua

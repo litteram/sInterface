@@ -5,6 +5,6 @@ C["minimap"] = {
 	enabled = true,
 	zoneText = false,
 	position = { "TOPRIGHT", UIParent, "TOPRIGHT", -C.general.edgeSpacing, -C.general.edgeSpacing },
-	width = 150,
-	height = 150
+	width = 180,
+	height = 180,
 }

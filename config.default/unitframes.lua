@@ -1,14 +1,11 @@
 local _, ns = ...
 local C = ns.C
 
--- 'sizes' is created for convenience.
--- you can set values directly in the unitframe
--- configuration
 local sizes = {
 	primary = {
 		width = 155,
-		height = 12,
-		power = 3,
+		height = 26,
+		power = 4,
 	},
 	secondary = {
 		width = 135,
@@ -38,7 +35,7 @@ C["uf"] = {
 
 	player = {
 		enabled = true,
-		position = { "CENTER", UIParent, "CENTER", 0, -175}, -- Unused if emulatePersonalResourceDisplay is set
+		position = { "RIGHT", UIParent, "CENTER", -250, -160}, -- Unused if emulatePersonalResourceDisplay is set
 		size = sizes.primary,
 		auras = {
 			enabled = true,
@@ -49,7 +46,7 @@ C["uf"] = {
 
 	target = {
 		enabled = true,
-		position = { "TOPLEFT", "oUF_sInterfacePlayer", "TOPRIGHT", 55, 130 },
+		position = { "LEFT", UIParent, "CENTER", 250, -160},
 		size = sizes.primary,
 		auras = {
 			enabled = true,
@@ -181,5 +178,9 @@ C["uf"] = {
 		-- Fire Mage
 		["Heating Up"] = true,
 		["Hot Streak!"] = true
-	}
+	},
+
+	debuffs = {
+		["Forberance"] = true,
+	},
 }

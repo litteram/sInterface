@@ -3,5 +3,6 @@ local C = ns.C
 
 C['nameplates'] = {
 	enabled = true,
-	tankMode = true
+	tankMode = false,
+	showThreat = true,
 }

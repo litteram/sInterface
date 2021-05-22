@@ -57,6 +57,12 @@ hooksecurefunc("CompactUnitFrame_UpdateAggroFlash", function(frame)
 		frame.healthBar.barTexture:SetVertexColor (r, g, b)
 		frame.healthBar.background:SetVertexColor(r*multiplier, g*multiplier, b*multiplier, 1)
 	end
+
+    -- if E:C('nameplates', 'showThreat') then
+    --     local _, _, val, rel = UnitDetailedThreatSituation("player", frame.unit)
+    --     print("set threat to "..tostring(val) .. ' ' .. tostring(rel))
+    --     frame.threatText.text:SetText(format("%i",  val))
+    -- end
 end)
 
 hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
@@ -106,6 +112,23 @@ hooksecurefunc("DefaultCompactNamePlateFrameSetupInternal", function(namePlate)
 	namePlate.name:SetDrawLayer(layer, sublayer+1)
 
 	namePlate.selectionHighlight:SetAlpha(0)
+
+    -- if E:C('nameplates', 'showThreat') then
+	--     local font, size, flags = GameFontNormalOutline:GetFont()
+    --     local threat = CreateFrame("Frame", nil, namePlate)
+    --     threat:SetParent(namePlate.name)
+    --     threat:SetWidth(24)
+    --     threat:SetHeight(24)
+    --     threat.text = threat:CreateFontString()
+    --     threat.text:SetParent(threat)
+	--     threat.text:SetFont(font, size*UIParent:GetScale(), flags)
+	--     threat.text:SetDrawLayer(layer, sublayer+1)
+    --     threat.text:SetText("")
+    --     threat.text:SetPoint("CENTER", threat, "CENTER", 0, 0)
+    --     threat.text:Show()
+    --     threat:SetPoint("LEFT", namePlate.name, "RIGHT", 0, 0)
+    --     namePlate.threatText = threat
+    -- end
 
 	namePlate.styled = true
 end)
